@@ -47,7 +47,7 @@ const ShopBox = styled.div`
 const Main = () => (
   <MainDiv>
     <Header />
-    <ShopBox>SHOP THE WORLD CUP STARS</ShopBox>
+    <ShopBox>SPOTT THE WORLD CUP STARS</ShopBox>
     <Body />
   </MainDiv>
 )

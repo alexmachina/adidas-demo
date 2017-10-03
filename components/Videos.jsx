@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import Carousel from 'nuka-carousel'
+import $ from 'jquery'
 
 const BodyBox = styled.div`
 @media screen and (min-width:280px){
@@ -105,8 +106,14 @@ const IFrame = styled.iframe`
 }
 `
 
-const StarButton = styled.button`
+const StarButton = styled.a`
 @media screen and (min-width:280px) {
+  text-decoration:none;
+  text-align:center;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:5px;
   width:80%;
   background-color:Transparent;
   background-image: none;
@@ -137,15 +144,20 @@ const Videos = class Videos extends React.Component {
           stars: [
         {
           starName: 'Leo Messi',
-          videoUrl: 'https://spott-cms-rest-prd.appiness.mobi:443/apptvate/rest/v004/video/videos/11229d55-9be0-427e-955d-137e6b9640f7/embeddedStreamer?templateName=default&theme=DARK&primaryColor=%23e30000&autoplay=false&hideProductRelevance=true&language=en'
+          videoUrl: 'https://spott-cms-rest-prd.appiness.mobi:443/apptvate/rest/v004/video/videos/df654623-016b-4878-9414-793b9c35d9e0/embeddedStreamer?templateName=default&theme=DARK&primaryColor=%23e30000&autoplay=false&hideProductRelevance=true&language=en',
+          link: 'http://www.adidas.com/us/leo_messi'
         },
         {
           starName: 'Mesut Özil',
-          videoUrl: 'https://spott-cms-rest-prd.appiness.mobi:443/apptvate/rest/v004/video/videos/706e65f5-c916-44a7-9392-5de9bdd9cd86/embeddedStreamer?templateName=default&theme=DARK&primaryColor=%23e30000&autoplay=false&hideProductRelevance=true&language=en'
+          videoUrl: 'https://spott-cms-rest-prd.appiness.mobi:443/apptvate/rest/v004/video/videos/706e65f5-c916-44a7-9392-5de9bdd9cd86/embeddedStreamer?templateName=default&theme=DARK&primaryColor=%23e30000&autoplay=false&hideProductRelevance=true&language=en',
+          link: 'http://www.adidas.com/us/mesut_ozil'
         },
+            
         {
-          starName: 'Belgium',
-          videoUrl: 'https://spott-cms-rest-prd.appiness.mobi:443/apptvate/rest/v004/video/videos/be44283f-1f8a-476a-93e6-1aeb3953d1de/embeddedStreamer?templateName=default&theme=DARK&primaryColor=%23e30000&autoplay=false&hideProductRelevance=true&language=en'
+          starName: 'Belgium Red Devils',
+          videoUrl: 'https://spott-cms-rest-prd.appiness.mobi:443/apptvate/rest/v004/video/videos/be44283f-1f8a-476a-93e6-1aeb3953d1de/embeddedStreamer?templateName=default&theme=DARK&primaryColor=%23e30000&autoplay=false&hideProductRelevance=true&language=en',
+          link: 'http://www.adidas.be/search?q=belgium'
+          
         }
       ]
     }
@@ -164,11 +176,13 @@ const Videos = class Videos extends React.Component {
         <CarouselBox>
           <Carousel decorators={[]} ref={c =>{ this.carousel = c}}>
             {this.state.stars.map(s => (
-              <IFrame key={s.starName} src={s.videoUrl} allowFullScreen></IFrame>
+              
+                <IFrame id={s.starName.toLowerCase().replace(' ','')} key={s.starName} src={s.videoUrl} allowFullScreen frameBorder="0"></IFrame>
+              
             ))}
           </Carousel>
         </CarouselBox>
-        <StarButton>
+        <StarButton target="_blank" href={stars[slidePos].link}>
           EXPLORE ALL {stars[slidePos].starName.toUpperCase()} ITEMS
         </StarButton>
       
@@ -187,9 +201,19 @@ const Videos = class Videos extends React.Component {
         return slidePos + 1
     }
     
-    const slidePos = calcSlidePos(this.state.slidePos)
-    this.setState({slidePos})
-    this.carousel.goToSlide(slidePos)
+    const stars = this.state.stars
+    const slidePos = this.state.slidePos
+    const idToStahp = stars[slidePos].starName.toLowerCase().replace(' ','')
+
+    document.getElementById(idToStahp).src = ""
+    
+    const newSlidePos = calcSlidePos(this.state.slidePos)
+    const nextId = stars[newSlidePos].starName.toLowerCase().replace(' ', '')
+    document.getElementById(nextId).src = stars[newSlidePos].videoUrl
+    this.setState({slidePos: newSlidePos})
+
+    
+    this.carousel.goToSlide(newSlidePos)
   }
 
   handleLeftArrowClick(e) {
@@ -200,11 +224,35 @@ const Videos = class Videos extends React.Component {
       else
         return slidePos - 1
     }
-
-    const slidePos = calcSlidePos(this.state.slidePos)
-    this.setState({slidePos})
-    this.carousel.goToSlide(slidePos)
+    const stars = this.state.stars
+    const slidePos = this.state.slidePos
+    const idToStahp = stars[slidePos].starName.toLowerCase().replace(' ','')
+    
+    document.getElementById(idToStahp).src = ""
+    
+    const newSlidePos = calcSlidePos(slidePos)
+    const nextId = stars[newSlidePos].starName.toLowerCase().replace(' ','')
+    document.getElementById(nextId).src = stars[newSlidePos].videoUrl
+    this.setState({slidePos: newSlidePos})
+    this.carousel.goToSlide(newSlidePos)
   }
 }
 
 export default Videos
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
